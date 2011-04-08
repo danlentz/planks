@@ -28,13 +28,18 @@ planks: persistent lisp, mumble mumble mumble mumble
 ** the planks.btree
    
 *** traditional btree concept
-
-    locking, mutation, ...
+    
+   -  design features which distinguish btree vs other common trees  
+   -  the root node
+   -  leaf nodes, uniform length of search path
+   -  search/lookup log n
+   -  rebalancing
+   -  locking, mutation, ...
     
 *** appending-only architecture
 
-
   -  trade-offs of and differences of functional btree
+  -  basic mechanics / btree-update / appending new root node
   -  clojure
      
 *** advantage vs. stateful design
@@ -66,7 +71,12 @@ planks: persistent lisp, mumble mumble mumble mumble
 *** key/value coding
     
 *** shallow copy serialization 
-   
+
+   - rucksack serializer
+      - utf8 encoded octet vector
+      - well-defined extensible serialization format compatible across all lisps and platforms   
+      - caveats: circular-structure, clos class/schema,  
+    
 ** persistent objects
 
 *** persistent-standard-class
