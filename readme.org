@@ -29,17 +29,29 @@ planks: persistent lisp, mumble mumble mumble mumble
    
 *** traditional btree concept
 
+    locking, mutation, ...
+    
 *** appending-only architecture
 
-*** advantage vs. stateful design
-    
-*** the planks.btree implementation
 
-    in-memory btree core implementation
+  -  trade-offs of and differences of functional btree
+  -  clojure
+     
+*** advantage vs. stateful design
+
+  -  lock free multi-threadded parallism
+  -  multi-version concurrency and object reference permanence 
+  -  uncorruptable, uncrashable, write-once file storage safety    
+  -  efficiency & distributing computational load / multi-core
+     
+*** the planks.btree implementation
+    
+  - the original rucksack p-btree
+  - in-memory b+tree core implementation
 
 ** btree data files
 
-*** species of file btree
+*** species of btree
     
    file vs single-file vs multi vs nested vs object-storage vs heap
 
