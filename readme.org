@@ -1,12 +1,15 @@
 planks: persistent lisp, mumble mumble mumble mumble
 
-* Features 
-  - 100% portable common lisp
-    uses bordeaux threads!
+* Features
+  
+  - 99.9% portable common lisp
   - functional, append-only index
-  - persistent CLOS objects
-  - thread safe
-  - multi-value concurrency control 
+  - persistent CLOS object store
+  - couchdb-style persistent functional views
+  - persistent heap
+  - persistent fulltext index
+  - thread safe, multi-value concurrency control
+  - versatile and lightweight  
   - easy to install and to use
 
 * Download and Install
@@ -16,16 +19,57 @@ planks: persistent lisp, mumble mumble mumble mumble
   http://common-lisp.net/project/planks/planks-release.tar.gz
   
 ** Version Control
+   planks is hosted on github project page:  http://github.com/drewc/planks
+   planks is available via public git repository: https://github.com/drewc/planks.git
 
-   planks is available via git 
+* btree concepts
 
+* append-only architecture
 
-
-     
+** advantages vs. stateful design
    
+** the basic functional btree implementation
 
+   in-memory btree core implementation
 
+* btree data files
+
+** species of file btree
+   
+  file vs single-file vs multi vs nested vs object-storage vs heap
+
+** btree forestry management
+
+   filesystem / best practices?
+   nested btree ?
+   moving toward single all-accomodating shared file format??
+   
+* persistent data
+
+** key/value storage
+   
+** shallow copy serialization 
   
-* Examples
+* persistent objects
+
+** persistent-standard-class
+
+* persistent storage
+
+** heap btree
+   
+* persistent views
+
+** function-btree
+
+* persistent index
+
+** string-hash
+
+** text-index
+   
+* additional examples
 
 ** Basic key/value store
+
+   
