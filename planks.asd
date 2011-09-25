@@ -2,8 +2,11 @@
 (asdf:defsystem #:planks 
   :author "Drew Crampsie <drewc@tech.coop>"
   :licence "MIT"
-  :components ((:module :src
-		:components ((:file "btree-protocol")
+  :components (#+(and sbcl (or x86 x86-64))
+                (:module :contrib
+                 :components ((:file "io-sbcl")))
+                (:module :src
+ 		 :components ((:file "btree-protocol")
 			     (:file "btree")
 			     (:file "btree-utils")
 			     (:file "btree-search")
