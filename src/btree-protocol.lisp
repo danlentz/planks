@@ -1,34 +1,3 @@
-(defpackage :planks.btree
-  (:use :cl)
-  (:export
-   ;; Btrees
-   #:btree
-   #:update-btree
-   #:btree-root
-   #:btree-key< #:btree-key= #:btree-value=
-   #:btree-max-node-size #:btree-unique-keys-p
-   #:btree-key-type #:btree-value-type
-   #:btree-node-class
-
-   ;; Nodes
-   #:btree-node
-
-   ;; Functions
-   #:btree-search #:btree-insert #:map-btree
-
-   ;; Conditions
-   #:btree-error #:btree-search-error #:btree-insertion-error
-   #:btree-key-already-present-error #:btree-type-error
-   #:btree-error-btree #:btree-error-key #:btree-error-value
-   #:make-btree
-   #:open-btree
-   #:find-btree
-   #:close-btree
-   #:multi-btree
-   #:add-function-btree
-   #:find-function-btree
-   #:heap-btree
-   #:btree-file-size))
 
 (in-package :planks.btree)
 
