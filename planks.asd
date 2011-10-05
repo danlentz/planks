@@ -9,7 +9,7 @@
                 #+(and sbcl (or x86 x86-64))
                 (:module :vendor
                   :components ((:file "sb-mmap")
-                                (:file "sb-lset"))
+                                (:file "mmap-grap-streams"))
                   :serial t)
 
                 (:module :src
@@ -34,4 +34,13 @@
                 :closer-mop))
 
 
-		
+
+
+#|
+
+(eval (read-from-string "(documentation-template:create-template :planks.btree
+                            :target   (asdf:system-relative-pathname (asdf:find-system :planks)
+                                        \"doc/api.html\")
+                            :subtitle \"persistent lisp, mumble mumble mumble\")"))
+
+|#

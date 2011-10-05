@@ -8,10 +8,20 @@
     
    ;; Btrees
     #:btree
+    #:file-btree
     #:multi-btree   
     #:heap-btree
+    #:function-btree
     #:single-file-btree
     #:object-storage-btree
+
+   ;; MOP
+    #:btree-class
+    #:btree-class-pathname
+    #:btree-object
+    #:btree-object-id
+    #:persistent-standard-class
+    #:persistent-standard-object
     
    ;; Parameters
     #:btree-key<
@@ -39,6 +49,8 @@
     #:add-function-btree
     #:find-function-btree
     #:btree-file-size
+    #:btree-depths
+    #:btree-balanced-p
     
    ;; Conditions
     #:btree-error
