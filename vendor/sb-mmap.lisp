@@ -2,6 +2,8 @@
 
 ;;; This software is in the public domain and is
 ;;; provided with absolutely no warranty.
+;;; Originates from stassats/storage
+
 
 (in-package #:planks.btree)
 
@@ -116,15 +118,16 @@
           (string-sap (sb-sys:vector-sap string)))
       (copy-mem string-sap mmap-sap length))))
 
-(defmacro with-io-file ((stream file &key (direction :input) size)
+(defmacro with-io-file ((stream file &key size (direction :input) (if-exists :supersede)
+                          (element-type '(unsigned-byte 8)))
                         &body body)
   (let ((fd-stream (gensym)))
     `(with-open-file (,fd-stream ,file
                                  :direction (if (eql ,direction :output)
                                                 :io
                                                 ,direction)
-                                 :if-exists :supersede
-                                 :element-type '(unsigned-byte 8))
+                                 :if-exists    ,if-exists
+                                 :element-type ,element-type)
        (let ((,stream (mmap ,fd-stream :direction ,direction :size ,size)))
          (unwind-protect
               (progn ,@body)
