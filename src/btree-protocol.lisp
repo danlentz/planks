@@ -5,7 +5,6 @@
    #:btree
    #:update-btree
    #:btree-root
-   #:do-btree
    #:btree-key< #:btree-key= #:btree-value=
    #:btree-max-node-size #:btree-unique-keys-p
    #:btree-key-type #:btree-value-type
@@ -26,7 +25,6 @@
    #:find-btree
    #:close-btree
    #:multi-btree
-   #:add-multi-btree
    #:add-function-btree
    #:find-function-btree
    #:heap-btree
