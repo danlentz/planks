@@ -4,6 +4,8 @@
   ((pathname :accessor btree-pathname :initarg :pathname))
   (:default-initargs :node-class 'file-btree-node))
 
+(defclass mmap-btree (file-btree) ())
+
 (defmethod shared-initialize :after ((object file-btree) slots &rest args)
   (declare (ignore slots args))
   (assert (> 128 (btree-max-node-size object)) () "Node size limited to 7 bits"))
@@ -16,11 +18,15 @@
 (defvar *btree-stream*)
 
 (defun call-with-btree-stream (btree fn &optional (direction :io))
-  (with-open-file (s (btree-pathname btree)
-		     :element-type '(unsigned-byte 8)
-		     :direction direction
-		     :if-exists :overwrite)
-    (funcall fn s)))
+  (typecase btree
+    (mmap-btree    (with-io-file (s (btree-pathname btree)
+                                   :direction direction)
+                     (funcall fn s)))
+    (t             (with-open-file (s (btree-pathname btree)
+                                     :element-type '(unsigned-byte 8)
+                                     :direction direction
+                                     :if-exists :overwrite)
+                     (funcall fn s)))))
 
 (defun btree-file-size (btree)
   (call-with-btree-stream btree #'file-length :input))
@@ -142,7 +148,8 @@
    (footer-class :accessor btree-file-footer-class :initarg :footer-class :initform 'btree-footer)
    (lock :accessor btree-lock)))
 
-(#+sbcl sb-ext:defglobal #-sbcl defvar =big-btree-lock= (bordeaux-threads:make-lock "Big lock for btrees"))
+(#+sbcl sb-ext:defglobal #-sbcl defvar =big-btree-lock=
+  (bordeaux-threads:make-lock "Big lock for btrees"))
 
 (defvar *btrees* (make-hash-table :test #'equal :synchronized t))
 
@@ -265,7 +272,8 @@
     (or (gethash path *btrees*) 
 	(bordeaux-threads:with-lock-held (=big-btree-lock=)
 	  (or (gethash path *btrees*) 
-	      (setf (gethash path *btrees*) 
+            (setf (gethash path *btrees*)
+
 		      (with-open-file (s path 
 					 :if-does-not-exist :error		     
 					 :direction :input

@@ -7,9 +7,9 @@
   :components ((:file "package")
                 
                 #+(and sbcl (or x86 x86-64))
-                (:module :vendor
-                  :components ((:file "sb-mmap")
-                                (:file "mmap-grap-streams"))
+                (:module :ext
+                  :components (;; (:file "sb-mmap")
+                                (:file "mmap-gray-streams"))
                   :serial t)
 
                 (:module :src
