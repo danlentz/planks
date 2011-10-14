@@ -13,15 +13,15 @@
     #:heap-btree
     #:function-btree
     #:single-file-btree
-    #:object-storage-btree
+;;    #:object-storage-btree
 
    ;; MOP
-    #:btree-class
-    #:btree-class-pathname
-    #:btree-object
-    #:btree-object-id
-    #:persistent-standard-class
-    #:persistent-standard-object
+;;    #:btree-class
+;;    #:btree-class-pathname
+;;    #:btree-object
+;;    #:btree-object-id
+;;    #:persistent-standard-class
+;;    #:persistent-standard-object
     
    ;; Parameters
     #:btree-key<
