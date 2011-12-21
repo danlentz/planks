@@ -1,0 +1,1088 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html> 
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>PLANKS.BTREE - persistent lisp, mumble mumble mumble</title>
+  <style type="text/css">
+  pre { padding:5px; background-color:#e0e0e0 }
+  h3, h4 { text-decoration: underline; }
+  a { text-decoration: none; padding: 1px 2px 1px 2px; }
+  a:visited { text-decoration: none; padding: 1px 2px 1px 2px; }
+  a:hover { text-decoration: none; padding: 1px 1px 1px 1px; border: 1px solid #000000; } 
+  a:focus { text-decoration: none; padding: 1px 2px 1px 2px; border: none; }
+  a.none { text-decoration: none; padding: 0; }
+  a.none:visited { text-decoration: none; padding: 0; } 
+  a.none:hover { text-decoration: none; border: none; padding: 0; } 
+  a.none:focus { text-decoration: none; border: none; padding: 0; } 
+  a.noborder { text-decoration: none; padding: 0; } 
+  a.noborder:visited { text-decoration: none; padding: 0; } 
+  a.noborder:hover { text-decoration: none; border: none; padding: 0; } 
+  a.noborder:focus { text-decoration: none; border: none; padding: 0; }  
+  pre.none { padding:5px; background-color:#ffffff }
+  </style>
+</head>
+
+<body bgcolor=white>
+
+<h2> PLANKS.BTREE - persistent lisp, mumble mumble mumble</h2>
+
+<blockquote>
+<br>&nbsp;<br><h3><a name=abstract class=none>Abstract</a></h3>
+
+The code comes with
+a <a
+href="http://www.opensource.org/licenses/bsd-license.php">BSD-style
+license</a> so you can basically do with it whatever you want.
+
+<p>
+<font color=red>Download shortcut:</font> <a href="http://weitz.de/files/planks.btree.tar.gz">http://weitz.de/files/planks.btree.tar.gz</a>.
+</blockquote>
+
+<br>&nbsp;<br><h3><a class=none name="contents">Contents</a></h3>
+<ol>
+  <li><a href="#download">Download</a>
+  <li><a href="#dictionary">The PLANKS.BTREE dictionary</a>
+    <ol>
+      <li><a href="#add-function-btree"><code>add-function-btree</code></a>
+      <li><a href="#btree"><code>btree</code></a>
+      <li><a href="#btree-balanced-p"><code>btree-balanced-p</code></a>
+      <li><a href="#btree-class"><code>btree-class</code></a>
+      <li><a href="#btree-class-pathname"><code>btree-class-pathname</code></a>
+      <li><a href="#btree-depths"><code>btree-depths</code></a>
+      <li><a href="#btree-error"><code>btree-error</code></a>
+      <li><a href="#btree-error-btree"><code>btree-error-btree</code></a>
+      <li><a href="#btree-error-key"><code>btree-error-key</code></a>
+      <li><a href="#btree-error-value"><code>btree-error-value</code></a>
+      <li><a href="#btree-file-size"><code>btree-file-size</code></a>
+      <li><a href="#btree-insert"><code>btree-insert</code></a>
+      <li><a href="#btree-insertion-error"><code>btree-insertion-error</code></a>
+      <li><a href="#btree-key-already-present-error"><code>btree-key-already-present-error</code></a>
+      <li><a href="#btree-key-type"><code>btree-key-type</code></a>
+      <li><a href="#btree-key<"><code>btree-key<</code></a>
+      <li><a href="#btree-key="><code>btree-key=</code></a>
+      <li><a href="#btree-max-node-size"><code>btree-max-node-size</code></a>
+      <li><a href="#btree-node"><code>btree-node</code></a>
+      <li><a href="#btree-node-class"><code>btree-node-class</code></a>
+      <li><a href="#btree-object"><code>btree-object</code></a>
+      <li><a href="#btree-object-id"><code>btree-object-id</code></a>
+      <li><a href="#btree-root"><code>btree-root</code></a>
+      <li><a href="#btree-search"><code>btree-search</code></a>
+      <li><a href="#btree-search-error"><code>btree-search-error</code></a>
+      <li><a href="#btree-type-error"><code>btree-type-error</code></a>
+      <li><a href="#btree-unique-keys-p"><code>btree-unique-keys-p</code></a>
+      <li><a href="#btree-value-type"><code>btree-value-type</code></a>
+      <li><a href="#btree-value="><code>btree-value=</code></a>
+      <li><a href="#close-btree"><code>close-btree</code></a>
+      <li><a href="#file-btree"><code>file-btree</code></a>
+      <li><a href="#find-btree"><code>find-btree</code></a>
+      <li><a href="#find-function-btree"><code>find-function-btree</code></a>
+      <li><a href="#function-btree"><code>function-btree</code></a>
+      <li><a href="#heap-btree"><code>heap-btree</code></a>
+      <li><a href="#make-btree"><code>make-btree</code></a>
+      <li><a href="#map-btree"><code>map-btree</code></a>
+      <li><a href="#multi-btree"><code>multi-btree</code></a>
+      <li><a href="#object-storage-btree"><code>object-storage-btree</code></a>
+      <li><a href="#persistent-standard-class"><code>persistent-standard-class</code></a>
+      <li><a href="#persistent-standard-object"><code>persistent-standard-object</code></a>
+      <li><a href="#single-file-btree"><code>single-file-btree</code></a>
+      <li><a href="#update-btree"><code>update-btree</code></a>
+    </ol>
+  <li><a href="#ack">Acknowledgements</a>
+</ol>
+
+<br>&nbsp;<br><h3><a class=none name="download">Download</a></h3>
+
+PLANKS.BTREE together with this documentation can be downloaded from <a
+href="http://weitz.de/files/planks.btree.tar.gz">http://weitz.de/files/planks.btree.tar.gz</a>. The
+current version is 0.1.0.
+
+<br>&nbsp;<br><h3><a class=none name="dictionary">The PLANKS.BTREE dictionary</a></h3>
+
+
+
+<!-- Entry for ADD-FUNCTION-BTREE -->
+
+<p><br>[Function]<br><a class=none name='add-function-btree'><b>add-function-btree</b> <i>btree function-name <tt>&amp;rest</tt> args</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for ADD-FUNCTION-BTREE -->
+
+
+<!-- Entry for BTREE -->
+
+<p><br>[Standard class]<br><a class=none name='btree'><b>btree</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE -->
+
+
+<!-- Entry for BTREE-BALANCED-P -->
+
+<p><br>[Generic function]<br><a class=none name='btree-balanced-p'><b>btree-balanced-p</b> <i>btree</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-BALANCED-P -->
+
+
+<!-- Entry for BTREE-BALANCED-P -->
+
+<p><br>[Method]<br><a class=none><b>btree-balanced-p</b> <i>(btree btree)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-BALANCED-P -->
+
+
+<!-- Entry for BTREE-CLASS -->
+
+<p><br>[Standard class]<br><a class=none name='btree-class'><b>btree-class</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-CLASS -->
+
+
+<!-- Entry for BTREE-CLASS-PATHNAME -->
+
+<p><br>[Generic accessor]<br><a class=none name='btree-class-pathname'><b>btree-class-pathname</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>btree-class-pathname</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-CLASS-PATHNAME -->
+
+
+<!-- Entry for BTREE-CLASS-PATHNAME -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>btree-class-pathname</b> <i>(object persistent-standard-class)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>btree-class-pathname</b> <i>(object persistent-standard-class)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for BTREE-CLASS-PATHNAME -->
+
+
+<!-- Entry for BTREE-CLASS-PATHNAME -->
+
+<p><br>[Method]<br><a class=none><b>btree-class-pathname</b> <i>(object standard-class)</i> =&gt; <i>result</i></a><tt> :around</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-CLASS-PATHNAME -->
+
+
+<!-- Entry for BTREE-CLASS-PATHNAME -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>btree-class-pathname</b> <i>(object btree-class)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>btree-class-pathname</b> <i>(object btree-class)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for BTREE-CLASS-PATHNAME -->
+
+
+<!-- Entry for BTREE-DEPTHS -->
+
+<p><br>[Generic function]<br><a class=none name='btree-depths'><b>btree-depths</b> <i>btree</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-DEPTHS -->
+
+
+<!-- Entry for BTREE-DEPTHS -->
+
+<p><br>[Method]<br><a class=none><b>btree-depths</b> <i>(btree file-btree)</i> =&gt; <i>result</i></a><tt> :around</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-DEPTHS -->
+
+
+<!-- Entry for BTREE-DEPTHS -->
+
+<p><br>[Method]<br><a class=none><b>btree-depths</b> <i>(btree btree)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-DEPTHS -->
+
+
+<!-- Entry for BTREE-ERROR -->
+
+<p><br>[Condition type]<br><a class=none name='btree-error'><b>btree-error</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-ERROR -->
+
+
+<!-- Entry for BTREE-ERROR-BTREE -->
+
+<p><br>[Generic function]<br><a class=none name='btree-error-btree'><b>btree-error-btree</b> <i>condition</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-ERROR-BTREE -->
+
+
+<!-- Entry for BTREE-ERROR-BTREE -->
+
+<p><br>[Method]<br><a class=none><b>btree-error-btree</b> <i>(condition btree-error)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-ERROR-BTREE -->
+
+
+<!-- Entry for BTREE-ERROR-KEY -->
+
+<p><br>[Generic function]<br><a class=none name='btree-error-key'><b>btree-error-key</b> <i>condition</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-ERROR-KEY -->
+
+
+<!-- Entry for BTREE-ERROR-KEY -->
+
+<p><br>[Method]<br><a class=none><b>btree-error-key</b> <i>(condition btree-insertion-error)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-ERROR-KEY -->
+
+
+<!-- Entry for BTREE-ERROR-KEY -->
+
+<p><br>[Method]<br><a class=none><b>btree-error-key</b> <i>(condition btree-search-error)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-ERROR-KEY -->
+
+
+<!-- Entry for BTREE-ERROR-VALUE -->
+
+<p><br>[Generic function]<br><a class=none name='btree-error-value'><b>btree-error-value</b> <i>condition</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-ERROR-VALUE -->
+
+
+<!-- Entry for BTREE-ERROR-VALUE -->
+
+<p><br>[Method]<br><a class=none><b>btree-error-value</b> <i>(condition btree-insertion-error)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-ERROR-VALUE -->
+
+
+<!-- Entry for BTREE-FILE-SIZE -->
+
+<p><br>[Function]<br><a class=none name='btree-file-size'><b>btree-file-size</b> <i>btree</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-FILE-SIZE -->
+
+
+<!-- Entry for BTREE-INSERT -->
+
+<p><br>[Generic function]<br><a class=none name='btree-insert'><b>btree-insert</b> <i>btree key value <tt>&amp;key</tt> if-exists if-exists</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+Adds an association from KEY to VALUE to a btree.
+
+IF-EXISTS can be either :OVERWRITE (default) or :ERROR.
+
+If the btree has unique keys (see BTREE-UNIQUE-KEYS-P) and KEY is
+already associated with another (according to BTREE-VALUE=) value, the
+result depends on the IF-EXISTS option: if IF-EXISTS is :OVERWRITE,
+the old value is overwriten; if IF-EXISTS is :ERROR, a
+BTREE-KEY-ALREADY-PRESENT-ERROR is signaled.
+
+For btrees with non-unique keys, the IF-EXISTS option is ignored and
+VALUE is just added to the list of values associated with KEY (unless
+VALUE is already associated with KEY; in that case nothing
+happens).
+
+</blockquote>
+
+<!-- End of entry for BTREE-INSERT -->
+
+
+<!-- Entry for BTREE-INSERT -->
+
+<p><br>[Method]<br><a class=none><b>btree-insert</b> <i>(btree btree) key value <tt>&amp;key</tt> if-exists if-exists</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-INSERT -->
+
+
+<!-- Entry for BTREE-INSERTION-ERROR -->
+
+<p><br>[Condition type]<br><a class=none name='btree-insertion-error'><b>btree-insertion-error</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-INSERTION-ERROR -->
+
+
+<!-- Entry for BTREE-KEY-ALREADY-PRESENT-ERROR -->
+
+<p><br>[Condition type]<br><a class=none name='btree-key-already-present-error'><b>btree-key-already-present-error</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-KEY-ALREADY-PRESENT-ERROR -->
+
+
+<!-- Entry for BTREE-KEY-TYPE -->
+
+<p><br>[Generic function]<br><a class=none name='btree-key-type'><b>btree-key-type</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-KEY-TYPE -->
+
+
+<!-- Entry for BTREE-KEY-TYPE -->
+
+<p><br>[Method]<br><a class=none><b>btree-key-type</b> <i>(object btree)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+The type of all keys.
+
+</blockquote>
+
+<!-- End of entry for BTREE-KEY-TYPE -->
+
+
+<!-- Entry for BTREE-KEY< -->
+
+<p><br>[Generic function]<br><a class=none name='btree-key<'><b>btree-key<</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-KEY< -->
+
+
+<!-- Entry for BTREE-KEY< -->
+
+<p><br>[Method]<br><a class=none><b>btree-key<</b> <i>(object btree)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-KEY< -->
+
+
+<!-- Entry for BTREE-KEY= -->
+
+<p><br>[Generic function]<br><a class=none name='btree-key='><b>btree-key=</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-KEY= -->
+
+
+<!-- Entry for BTREE-KEY= -->
+
+<p><br>[Method]<br><a class=none><b>btree-key=</b> <i>(object btree)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-KEY= -->
+
+
+<!-- Entry for BTREE-MAX-NODE-SIZE -->
+
+<p><br>[Generic function]<br><a class=none name='btree-max-node-size'><b>btree-max-node-size</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-MAX-NODE-SIZE -->
+
+
+<!-- Entry for BTREE-MAX-NODE-SIZE -->
+
+<p><br>[Method]<br><a class=none><b>btree-max-node-size</b> <i>(object btree)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+An integer specifying the preferred maximum number
+of keys per btree node.
+
+</blockquote>
+
+<!-- End of entry for BTREE-MAX-NODE-SIZE -->
+
+
+<!-- Entry for BTREE-NODE -->
+
+<p><br>[Standard class]<br><a class=none name='btree-node'><b>btree-node</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-NODE -->
+
+
+<!-- Entry for BTREE-NODE-CLASS -->
+
+<p><br>[Generic function]<br><a class=none name='btree-node-class'><b>btree-node-class</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-NODE-CLASS -->
+
+
+<!-- Entry for BTREE-NODE-CLASS -->
+
+<p><br>[Method]<br><a class=none><b>btree-node-class</b> <i>(object btree)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for BTREE-NODE-CLASS -->
+
+
+<!-- Entry for BTREE-OBJECT -->
+
+<p><br>[Standard class]<br><a class=none name='btree-object'><b>btree-object</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-OBJECT -->
+
+
+<!-- Entry for BTREE-OBJECT-ID -->
+
+<p><br>[Generic accessor]<br><a class=none name='btree-object-id'><b>btree-object-id</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>btree-object-id</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-OBJECT-ID -->
+
+
+<!-- Entry for BTREE-OBJECT-ID -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>btree-object-id</b> <i>(object btree-object)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>btree-object-id</b> <i>(object btree-object)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for BTREE-OBJECT-ID -->
+
+
+<!-- Entry for BTREE-ROOT -->
+
+<p><br>[Generic accessor]<br><a class=none name='btree-root'><b>btree-root</b> <i>object</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>btree-root</b> <i>object</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-ROOT -->
+
+
+<!-- Entry for BTREE-ROOT -->
+
+<p><br>[Method]<br><a class=none><b>btree-root</b> <i>(object file-btree)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-ROOT -->
+
+
+<!-- Entry for BTREE-ROOT -->
+
+<p><br>[Specialized accessor]<br><a class=none><b>btree-root</b> <i>(object btree)</i> =&gt; <i>result</i></a>
+<br><a class=none><tt>(setf (</tt><b>btree-root</b> <i>(object btree)</i><tt>)</tt> <i>new-value</i><tt>)</tt></a>
+<blockquote><br>
+
+automatically generated reader method
+
+</blockquote>
+
+<!-- End of entry for BTREE-ROOT -->
+
+
+<!-- Entry for BTREE-SEARCH -->
+
+<p><br>[Generic function]<br><a class=none name='btree-search'><b>btree-search</b> <i>btree key <tt>&amp;key</tt> errorp default-value default-value errorp function address-only <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+Returns the value (or list of values, for btrees
+ that don&#039;t have unique keys) corresponding to KEY.  If the btree has
+ non-unique keys and no value is found, the empty list is returned.  If
+ the btree has unique keys and no value is found, the result depends on
+ ERRORP option: if ERRORP is true, a btree-search-error is signalled;
+ otherwise, DEFAULT-VALUE is returned.
+
+</blockquote>
+
+<!-- End of entry for BTREE-SEARCH -->
+
+
+<!-- Entry for BTREE-SEARCH -->
+
+<p><br>[Method]<br><a class=none><b>btree-search</b> <i>(btree multi-btree) key <tt>&amp;key</tt> errorp default-value default-value errorp function address-only <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a><tt> :around</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-SEARCH -->
+
+
+<!-- Entry for BTREE-SEARCH -->
+
+<p><br>[Method]<br><a class=none><b>btree-search</b> <i>(btree heap-btree) key <tt>&amp;key</tt> errorp default-value default-value errorp function address-only <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-SEARCH -->
+
+
+<!-- Entry for BTREE-SEARCH -->
+
+<p><br>[Method]<br><a class=none><b>btree-search</b> <i>btree key <tt>&amp;key</tt> errorp default-value default-value errorp function address-only <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-SEARCH -->
+
+
+<!-- Entry for BTREE-SEARCH-ERROR -->
+
+<p><br>[Condition type]<br><a class=none name='btree-search-error'><b>btree-search-error</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-SEARCH-ERROR -->
+
+
+<!-- Entry for BTREE-TYPE-ERROR -->
+
+<p><br>[Condition type]<br><a class=none name='btree-type-error'><b>btree-type-error</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-TYPE-ERROR -->
+
+
+<!-- Entry for BTREE-UNIQUE-KEYS-P -->
+
+<p><br>[Generic function]<br><a class=none name='btree-unique-keys-p'><b>btree-unique-keys-p</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-UNIQUE-KEYS-P -->
+
+
+<!-- Entry for BTREE-UNIQUE-KEYS-P -->
+
+<p><br>[Method]<br><a class=none><b>btree-unique-keys-p</b> <i>(object btree)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+If false, one key can correspond to more than one value.
+
+</blockquote>
+
+<!-- End of entry for BTREE-UNIQUE-KEYS-P -->
+
+
+<!-- Entry for BTREE-VALUE-TYPE -->
+
+<p><br>[Generic function]<br><a class=none name='btree-value-type'><b>btree-value-type</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-VALUE-TYPE -->
+
+
+<!-- Entry for BTREE-VALUE-TYPE -->
+
+<p><br>[Method]<br><a class=none><b>btree-value-type</b> <i>(object btree)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+The type of all values.
+
+</blockquote>
+
+<!-- End of entry for BTREE-VALUE-TYPE -->
+
+
+<!-- Entry for BTREE-VALUE= -->
+
+<p><br>[Generic function]<br><a class=none name='btree-value='><b>btree-value=</b> <i>object</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-VALUE= -->
+
+
+<!-- Entry for BTREE-VALUE= -->
+
+<p><br>[Method]<br><a class=none><b>btree-value=</b> <i>(object btree)</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for BTREE-VALUE= -->
+
+
+<!-- Entry for CLOSE-BTREE -->
+
+<p><br>[Function]<br><a class=none name='close-btree'><b>close-btree</b> <i>path</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for CLOSE-BTREE -->
+
+
+<!-- Entry for FILE-BTREE -->
+
+<p><br>[Standard class]<br><a class=none name='file-btree'><b>file-btree</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for FILE-BTREE -->
+
+
+<!-- Entry for FIND-BTREE -->
+
+<p><br>[Function]<br><a class=none name='find-btree'><b>find-btree</b> <i>path</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for FIND-BTREE -->
+
+
+<!-- Entry for FIND-FUNCTION-BTREE -->
+
+<p><br>[Function]<br><a class=none name='find-function-btree'><b>find-function-btree</b> <i>btree function-name</i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for FIND-FUNCTION-BTREE -->
+
+
+<!-- Entry for FUNCTION-BTREE -->
+
+<p><br>[Standard class]<br><a class=none name='function-btree'><b>function-btree</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for FUNCTION-BTREE -->
+
+
+<!-- Entry for HEAP-BTREE -->
+
+<p><br>[Standard class]<br><a class=none name='heap-btree'><b>heap-btree</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for HEAP-BTREE -->
+
+
+<!-- Entry for MAKE-BTREE -->
+
+<p><br>[Function]<br><a class=none name='make-btree'><b>make-btree</b> <i>pathname <tt>&amp;rest</tt> args <tt>&amp;key</tt> if-exists class <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MAKE-BTREE -->
+
+
+<!-- Entry for MAP-BTREE -->
+
+<p><br>[Generic function]<br><a class=none name='map-btree'><b>map-btree</b> <i>btree function <tt>&amp;key</tt> min max include-min include-max order address-only order <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+Calls FUNCTION for all key/value associations in the btree where
+key is in the specified interval (this means that FUNCTION can be
+called with the same key more than once for btrees with non-unique
+keys). FUNCTION must be a binary function; the first argument is the
+btree key, the second argument is an associated value.
+
+MIN, MAX, INCLUDE-MIN and INCLUDE-MAX specify the interval.  The
+interval is left-open if MIN is nil, right-open if MAX is nil.  The
+interval is inclusive on the left if INCLUDE-MIN is true (and
+exclusive on the left otherwise).  The interval is inclusive on the
+right if INCLUDE-MAX is true (and exclusive on the right otherwise).
+
+ORDER is either :ASCENDING (default) or :DESCENDING.
+
+</blockquote>
+
+<!-- End of entry for MAP-BTREE -->
+
+
+<!-- Entry for MAP-BTREE -->
+
+<p><br>[Method]<br><a class=none><b>map-btree</b> <i>(btree heap-btree) function <tt>&amp;key</tt> min max include-min include-max order address-only order <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a><tt> :around</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MAP-BTREE -->
+
+
+<!-- Entry for MAP-BTREE -->
+
+<p><br>[Method]<br><a class=none><b>map-btree</b> <i>(btree btree) function <tt>&amp;key</tt> min max include-min include-max order address-only order <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MAP-BTREE -->
+
+
+<!-- Entry for MULTI-BTREE -->
+
+<p><br>[Standard class]<br><a class=none name='multi-btree'><b>multi-btree</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for MULTI-BTREE -->
+
+
+<!-- Entry for OBJECT-STORAGE-BTREE -->
+
+<p><br>[Standard class]<br><a class=none name='object-storage-btree'><b>object-storage-btree</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for OBJECT-STORAGE-BTREE -->
+
+
+<!-- Entry for PERSISTENT-STANDARD-CLASS -->
+
+<p><br>[Standard class]<br><a class=none name='persistent-standard-class'><b>persistent-standard-class</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PERSISTENT-STANDARD-CLASS -->
+
+
+<!-- Entry for PERSISTENT-STANDARD-OBJECT -->
+
+<p><br>[Standard class]<br><a class=none name='persistent-standard-object'><b>persistent-standard-object</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for PERSISTENT-STANDARD-OBJECT -->
+
+
+<!-- Entry for SINGLE-FILE-BTREE -->
+
+<p><br>[Standard class]<br><a class=none name='single-file-btree'><b>single-file-btree</b></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for SINGLE-FILE-BTREE -->
+
+
+<!-- Entry for UPDATE-BTREE -->
+
+<p><br>[Generic function]<br><a class=none name='update-btree'><b>update-btree</b> <i>btree <tt>&amp;key</tt> key value action value-thunk <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+This is the function that implements the functional b+tree. It is not meant to be called by users, but is specialized when extending
+
+</blockquote>
+
+<!-- End of entry for UPDATE-BTREE -->
+
+
+<!-- Entry for UPDATE-BTREE -->
+
+<p><br>[Method]<br><a class=none><b>update-btree</b> <i>(btree persistent-standard-object-slot-btree) <tt>&amp;key</tt> key value action value-thunk <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for UPDATE-BTREE -->
+
+
+<!-- Entry for UPDATE-BTREE -->
+
+<p><br>[Method]<br><a class=none><b>update-btree</b> <i>(btree nested-btree) <tt>&amp;key</tt> key value action value-thunk <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a><tt> :around</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for UPDATE-BTREE -->
+
+
+<!-- Entry for UPDATE-BTREE -->
+
+<p><br>[Method]<br><a class=none><b>update-btree</b> <i>(btree object-storage-btree) <tt>&amp;key</tt> key value action value-thunk <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for UPDATE-BTREE -->
+
+
+<!-- Entry for UPDATE-BTREE -->
+
+<p><br>[Method]<br><a class=none><b>update-btree</b> <i>(btree function-btree) <tt>&amp;key</tt> key value action value-thunk <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a><tt> :around</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for UPDATE-BTREE -->
+
+
+<!-- Entry for UPDATE-BTREE -->
+
+<p><br>[Method]<br><a class=none><b>update-btree</b> <i>(btree heap-btree) <tt>&amp;key</tt> key value action value-thunk <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for UPDATE-BTREE -->
+
+
+<!-- Entry for UPDATE-BTREE -->
+
+<p><br>[Method]<br><a class=none><b>update-btree</b> <i>(btree single-file-btree) <tt>&amp;key</tt> key value action value-thunk <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a><tt> :around</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for UPDATE-BTREE -->
+
+
+<!-- Entry for UPDATE-BTREE -->
+
+<p><br>[Method]<br><a class=none><b>update-btree</b> <i>(btree file-btree) <tt>&amp;key</tt> key value action value-thunk <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a><tt> :around</tt>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for UPDATE-BTREE -->
+
+
+<!-- Entry for UPDATE-BTREE -->
+
+<p><br>[Method]<br><a class=none><b>update-btree</b> <i>btree <tt>&amp;key</tt> key value action value-thunk <tt>&amp;allow-other-keys</tt></i> =&gt; <i>result</i></a>
+<blockquote><br>
+
+
+
+</blockquote>
+
+<!-- End of entry for UPDATE-BTREE -->
+
+
+<br>&nbsp;<br><h3><a class=none name="ack">Acknowledgements</a></h3>
+
+<p>
+This documentation was prepared with <a href="http://weitz.de/documentation-template/">DOCUMENTATION-TEMPLATE</a>.
+</p>
+<p>
+$Header: /usr/local/cvsrep/documentation-template/output.lisp,v 1.17 2010/08/05 19:24:27 edi Exp $
+<p><a href="http://weitz.de/index.html">BACK TO MY HOMEPAGE</a>
+
+</body>
+</html>
