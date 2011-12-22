@@ -5,7 +5,7 @@
 
 (in-package :planks.btree-test)
 
-(defvar *path* "/tmp/btree")
+(defvar *path* "/tmp/btree/test.btree")
 
 
 
@@ -56,7 +56,6 @@
        then (btree-insert b i r))
 
     (add-function-btree (find-btree path) 'reverse-map :key= 'equal :key< 'string<)
-
     (add-function-btree (find-btree path) 'add-one-to-key)
     (add-function-btree (find-btree path) 'length-of-value :key= 'equal :key< 'string<)
     (find-btree path)))
@@ -74,6 +73,7 @@
   (map-btree (find-function-btree bt 'length-of-value) 
 	     (lambda (k v)
 	       (assert (equal (length k) v)))))
+
 
 (defun test-heap-btree ()
   (make-btree *path*
@@ -97,7 +97,7 @@
 	 (btree-insert bt (uuid:print-bytes nil (uuid:make-v1-uuid)) n)
 	 (close-btree bt))
 	 
-    (format t "File Size : ~A" (float (/ (btree-file-size bt) (* 1024 1024))))
+    (format nil "File Size : ~A" (float (/ (btree-file-size bt) (* 1024 1024))))
     bt))
     
   
@@ -105,7 +105,11 @@
 (progn 
   (test-file-btree-insert)
   (test-btree-balance)
-  (test-multi-btree-existing-data))
+  (test-multi-btree-existing-data-insert)
+  (test-multi-btree-existing-data)
+  (test-heap-btree)
+  (test-heap-btree-more)
+  )
     
 
 
