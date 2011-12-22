@@ -19,9 +19,9 @@
 
 (defun call-with-btree-stream (btree fn &optional (direction :io))
   (typecase btree
-    (mmap-btree    (with-io-file (s (btree-pathname btree)
-                                   :direction direction)
-                     (funcall fn s)))
+;;    (mmap-btree    (with-io-file (s (btree-pathname btree)
+;;                                   :direction direction)
+;;                     (funcall fn s)))
     (t             (with-open-file (s (btree-pathname btree)
                                      :element-type '(unsigned-byte 8)
                                      :direction direction
